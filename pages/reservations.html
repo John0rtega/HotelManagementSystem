@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Reservation System</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components/tabs.css" />
+    <link rel="stylesheet" href="../css/components/forms.css" />
+    <link rel="stylesheet" href="../css/components/reservations.css" />
+    <link rel="stylesheet" href="../css/components/buttons.css" />
+    <link rel="stylesheet" href="../css/components/navigation.css" />
+    <link rel="stylesheet" href="../css/components/calendar.css" />
+    <!-- FullCalendar Dependencies -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <!-- Popper.js and Tippy.js for tooltips -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link href="https://unpkg.com/tippy.js@6/dist/tippy.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="main-nav">
+      <div class="nav-container">
+        <h1>
+          <a href="../index.html" class="home-link">Hotel Management System</a>
+        </h1>
+        <ul class="nav-links">
+          <li><a href="reservations.html" class="active">Reservations</a></li>
+          <li><a href="cleaning.html">Cleaning Management</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="tabs">
+        <div class="tab-buttons">
+          <button class="tab-button active" data-tab="current">
+            Reservations
+          </button>
+          <button class="tab-button" data-tab="availability">
+            Availability
+          </button>
+        </div>
+
+        <div class="tab-content active" id="current">
+          <div class="search-section">
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search reservations..."
+            />
+            <select id="searchFilter" class="search-filter">
+              <option value="all">All Fields</option>
+              <option value="name">Guest Name</option>
+              <option value="email">Email</option>
+              <option value="room">Room Number</option>
+            </select>
+          </div>
+          <div id="currentReservationsList" class="reservations-grid">
+            <!-- Reservations will be populated here -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="availability">
+          <div class="calendar-container">
+            <div class="calendar-legend-sidebar">
+              <h3>Room Types</h3>
+              <div class="legend-items">
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #4caf50"
+                  ></div>
+                  <span>Deluxe Room</span>
+                </div>
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #2196f3"
+                  ></div>
+                  <span>Suite</span>
+                </div>
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #9c27b0"
+                  ></div>
+                  <span>Executive</span>
+                </div>
+              </div>
+              <div class="legend-tip">
+                <p>
+                  <i>Click on an available date to make a new reservation</i>
+                </p>
+              </div>
+            </div>
+
+            <div class="calendar-main">
+              <div id="calendar"></div>
+            </div>
+          </div>
+
+          <div id="reservationModal" class="modal">
+            <div class="modal-content">
+              <span class="close-modal">&times;</span>
+              <h2>New Reservation</h2>
+              <form id="reservationForm" class="form-grid">
+                <div class="form-group">
+                  <label for="guestName">Guest Name</label>
+                  <input type="text" id="guestName" name="guestName" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" required />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" id="phone" name="phone" required />
+                </div>
+                <div class="form-group">
+                  <label for="roomType">Room Type</label>
+                  <select id="roomType" name="roomType" required>
+                    <!-- Will be populated dynamically -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="roomNumber">Room Number</label>
+                  <select id="roomNumber" name="roomNumber" required>
+                    <!-- Will be populated dynamically -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="guests">Number of Guests</label>
+                  <input
+                    type="number"
+                    id="guests"
+                    name="guests"
+                    min="1"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="checkIn">Check-in Date</label>
+                  <input type="date" id="checkIn" name="checkIn" required />
+                </div>
+                <div class="form-group">
+                  <label for="checkOut">Check-out Date</label>
+                  <input type="date" id="checkOut" name="checkOut" required />
+                </div>
+                <div class="form-group" style="grid-column: span 2">
+                  <button type="submit" class="submit-button">
+                    Create Reservation
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="../js/data.js"></script>
+    <script src="../js/components/tabs.js"></script>
+    <script src="../js/components/calendar.js"></script>
+    <script src="../js/components/reservations.js"></script>
+    <script src="../js/components/search.js"></script>
+    <script src="../js/components/form.js"></script>
+    <script src="../js/main.js"></script>
+  </body>
+</html>

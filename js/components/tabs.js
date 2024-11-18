@@ -1,21 +1,27 @@
 function initializeTabs() {
-  document.querySelectorAll('.tab-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      document
-        .querySelectorAll('.tab-button')
-        .forEach((btn) => btn.classList.remove('active'));
-      document
-        .querySelectorAll('.tab-content')
-        .forEach((content) => content.classList.remove('active'));
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
 
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      // Remove active class from all buttons and contents
+      tabButtons.forEach((btn) => btn.classList.remove('active'));
+      tabContents.forEach((content) => content.classList.remove('active'));
+
+      // Add active class to clicked button
       button.classList.add('active');
-      document
-        .getElementById(
-          button.dataset.tab === 'reservations'
-            ? 'reservations'
-            : 'new-reservation'
-        )
-        .classList.add('active');
+
+      // Show corresponding content
+      const tabId = button.getAttribute('data-tab');
+      const content = document.getElementById(tabId);
+      if (content) {
+        content.classList.add('active');
+      }
     });
   });
 }
+
+// Wait for DOM to be fully loaded before initializing
+document.addEventListener('DOMContentLoaded', () => {
+  initializeTabs();
+});

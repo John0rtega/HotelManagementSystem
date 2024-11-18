@@ -1,0 +1,495 @@
+.calendar-section {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#calendar {
+  margin-bottom: 20px;
+}
+
+.fc-event {
+  cursor: pointer;
+}
+
+.fc-day:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.calendar-header {
+  margin-bottom: 30px;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.month-nav-btn {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.month-nav-btn:hover {
+  background: #f8f9fa;
+}
+
+#currentMonth {
+  font-size: 24px;
+  min-width: 200px;
+  text-align: center;
+}
+
+.room-type-filters {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.calendar-wrapper {
+  overflow-x: auto;
+  padding-bottom: 15px;
+  max-width: 100%;
+}
+
+.room-calendar {
+  display: grid;
+  grid-template-columns: 150px repeat(31, 45px);
+  border: 1px solid #000;
+  min-width: min-content;
+  background: white;
+}
+
+.room-calendar .header,
+.room-calendar .cell,
+.room-calendar .room-number {
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 12px 8px;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.room-calendar .header {
+  background: #f8f9fa;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 50px;
+}
+
+.room-calendar .room-number {
+  background: #f8f9fa;
+  font-weight: bold;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  padding: 8px;
+}
+
+.room-calendar .room-row {
+  display: contents;
+}
+
+.room-calendar .available {
+  background: #d4edda;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.room-calendar .booked {
+  background: #f8d7da;
+}
+
+.room-calendar .available:hover {
+  background: #c3e6cb;
+}
+
+.room-calendar .available:hover .room-tooltip {
+  display: block;
+}
+
+.room-tooltip {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+  width: 200px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.room-tooltip ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.room-tooltip li {
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.room-tooltip li:last-child {
+  border-bottom: none;
+}
+
+.calendar-legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  padding: 15px;
+  border-top: 1px solid #dee2e6;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+}
+
+.legend-color.available {
+  background: #d4edda;
+}
+
+.legend-color.booked {
+  background: #f8d7da;
+}
+
+#newReservationBtn {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+#newReservationBtn:hover {
+  background: #0056b3;
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.reservation-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.reservation-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  margin: 0 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.action-btn.edit {
+  background-color: #007bff;
+  color: white;
+}
+
+.action-btn.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.new-reservation-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.new-reservation-btn:hover {
+  background: #0056b3;
+}
+
+.event-tooltip {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.event-tooltip p {
+    margin: 4px 0;
+}
+
+.fc-event {
+    padding: 2px 4px;
+    margin: 1px;
+    border-radius: 3px;
+}
+
+.fc-event-title {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fc {
+    width: 100% !important;
+    max-height: 600px;
+    font-size: 0.9em;
+}
+
+.fc .fc-view-harness {
+    height: auto !important;
+    min-height: 400px;
+}
+
+.fc .fc-daygrid-day-frame {
+    min-height: 70px !important;
+}
+
+.fc-event-title {
+    font-size: 11px !important;
+    padding: 2px;
+}
+
+.fc .fc-toolbar {
+    margin-bottom: 1.5em;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.2em;
+}
+
+.fc .fc-button {
+    padding: 0.3em 0.6em;
+    font-size: 0.9em;
+}
+
+.calendar-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.calendar-legend-sidebar {
+    width: 200px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.calendar-main {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    min-width: 0;
+}
+
+.calendar-legend-sidebar h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.legend-item span {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.legend-tip {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.legend-tip p {
+    font-size: 0.85em;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Make calendar responsive */
+@media (max-width: 768px) {
+    .calendar-container {
+        flex-direction: column;
+    }
+
+    .calendar-legend-sidebar {
+        width: auto;
+    }
+
+    .legend-items {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Force calendar to take full width initially */
+.fc {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 500px;
+}
+
+/* Ensure proper initial rendering */
+.fc .fc-view-harness {
+    height: auto !important;
+    min-height: 500px;
+}
+
+/* Make day cells consistent */
+.fc .fc-daygrid-day-frame {
+    min-height: 70px !important;
+}
+
+/* Adjust event text */
+.fc-event-title {
+    font-size: 11px !important;
+    padding: 2px;
+}
+
+/* Add some spacing between elements */
+.fc .fc-toolbar {
+    margin-bottom: 1.5em !important;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.2em !important;
+}
+
+/* Make sure buttons are properly sized */
+.fc .fc-button {
+    padding: 0.3em 0.6em !important;
+    font-size: 0.9em !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calendar-container {
+        flex-direction: column;
+    }
+
+    .calendar-legend-sidebar {
+        width: auto;
+    }
+
+    .fc .fc-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+} 

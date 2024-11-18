@@ -3,100 +3,90 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel Reservation System</title>
+    <title>Hotel Management System</title>
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/components/tabs.css" />
-    <link rel="stylesheet" href="css/components/forms.css" />
-    <link rel="stylesheet" href="css/components/reservations.css" />
-    <link rel="stylesheet" href="css/components/buttons.css" />
+    <link rel="stylesheet" href="css/components/navigation.css" />
+    <link rel="stylesheet" href="css/components/dashboard.css" />
+    <!-- Add Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
   <body>
-    <div class="container">
-      <div class="tabs">
-        <div class="tab-buttons">
-          <button class="tab-button active" data-tab="reservations">
-            Reservations List
-          </button>
-          <button class="tab-button" data-tab="new-reservation">
-            New Reservation
-          </button>
-        </div>
+    <nav class="main-nav">
+      <div class="nav-container">
+        <h1>
+          <a href="index.html" class="home-link">
+            <i class="fas fa-hotel"></i>
+            Hotel Management System
+          </a>
+        </h1>
+        <ul class="nav-links">
+          <li>
+            <a href="pages/reservations.html"
+              ><i class="fas fa-calendar-alt"></i> Reservations</a
+            >
+          </li>
+          <li>
+            <a href="pages/cleaning.html"
+              ><i class="fas fa-broom"></i> Cleaning Management</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-        <div class="tab-content active" id="reservations">
-          <div class="search-section">
-            <input
-              type="text"
-              id="searchInput"
-              class="search-input"
-              placeholder="Search reservations..."
-            />
-            <select id="searchFilter" class="search-filter">
-              <option value="all">All Fields</option>
-              <option value="name">Name</option>
-              <option value="email">Email</option>
-              <option value="room">Room Number</option>
-            </select>
+    <main class="container">
+      <div class="dashboard-welcome">
+        <h2>Welcome to Hotel Management</h2>
+        <p>Select a module below to get started</p>
+      </div>
+
+      <div class="dashboard-cards">
+        <div
+          class="card"
+          onclick="window.location.href='pages/reservations.html'"
+        >
+          <div class="card-icon">
+            <i class="fas fa-calendar-alt"></i>
           </div>
-          <div id="reservationsList"></div>
+          <div class="card-content">
+            <h2>Reservations Management</h2>
+            <p>Manage hotel bookings and guest information</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> View all reservations</li>
+              <li><i class="fas fa-check"></i> Check room availability</li>
+              <li><i class="fas fa-check"></i> Manage guest bookings</li>
+            </ul>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
         </div>
 
-        <div class="tab-content" id="new-reservation">
-          <form id="reservationForm">
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Guest Name</label>
-                <input type="text" name="guestName" required />
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" required />
-              </div>
-              <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" name="phone" required />
-              </div>
-              <div class="form-group">
-                <label>Room Type</label>
-                <select name="roomType">
-                  <option>Deluxe</option>
-                  <option>Suite</option>
-                  <option>Executive</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Room Number</label>
-                <input type="text" name="roomNumber" required />
-              </div>
-              <div class="form-group">
-                <label>Number of Guests</label>
-                <input type="number" name="guests" min="1" value="1" required />
-              </div>
-              <div class="form-group">
-                <label>Check-in Date</label>
-                <input type="date" name="checkIn" required />
-              </div>
-              <div class="form-group">
-                <label>Check-out Date</label>
-                <input type="date" name="checkOut" required />
-              </div>
-            </div>
-            <button type="submit" class="submit-btn">Create Reservation</button>
-          </form>
-
-          <div class="calendar-placeholder">
-            <p>Calendar view will be implemented in the next phase</p>
+        <div class="card" onclick="window.location.href='pages/cleaning.html'">
+          <div class="card-icon">
+            <i class="fas fa-broom"></i>
+          </div>
+          <div class="card-content">
+            <h2>Cleaning Management</h2>
+            <p>Track room cleaning status and assignments</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> View cleaning schedule</li>
+              <li><i class="fas fa-check"></i> Assign staff to rooms</li>
+              <li><i class="fas fa-check"></i> Track cleaning status</li>
+            </ul>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <!-- JavaScript Files -->
-    <script src="js/data.js"></script>
-    <script src="js/components/tabs.js"></script>
-    <script src="js/components/reservations.js"></script>
-    <script src="js/components/search.js"></script>
-    <script src="js/components/form.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

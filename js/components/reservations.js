@@ -69,33 +69,6 @@ function formatDate(dateString) {
   });
 }
 
-// Initialize search functionality
-function initializeSearch() {
-  const searchInput = document.getElementById('searchInput');
-  const searchFilter = document.getElementById('searchFilter');
-
-  if (searchInput && searchFilter) {
-    function handleSearch() {
-      const query = searchInput.value.toLowerCase();
-      const filter = searchFilter.value;
-
-      const filteredData = reservationsData.items.filter((reservation) => {
-        if (filter === 'all') {
-          return Object.values(reservation).some((value) =>
-            String(value).toLowerCase().includes(query)
-          );
-        }
-        return String(reservation[filter]).toLowerCase().includes(query);
-      });
-
-      renderReservations(filteredData);
-    }
-
-    searchInput.addEventListener('input', handleSearch);
-    searchFilter.addEventListener('change', handleSearch);
-  }
-}
-
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Make sure data.js is loaded first
@@ -105,5 +78,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   renderReservations();
-  initializeSearch();
 });

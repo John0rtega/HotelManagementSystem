@@ -7,6 +7,7 @@ class RoomCalendar {
     };
     this.calendar = null;
     this.modal = null;
+    this.reservationsData = []; // Store fetched reservations data
     this.init();
   }
 
@@ -75,6 +76,7 @@ class RoomCalendar {
       return;
     }
 
+    // Open reservation modal
     this.openReservationModal(selectedDate, availableRooms);
   }
 
@@ -91,9 +93,9 @@ class RoomCalendar {
   }
 
   isRoomBooked(roomNumber, date) {
-    if (!Array.isArray(reservationsData.items)) return false;
+    if (!Array.isArray(this.reservationsData)) return false; // Use stored reservations data
 
-    return reservationsData.items.some((reservation) => {
+    return this.reservationsData.some((reservation) => {
       const checkIn = new Date(reservation.checkIn);
       const checkOut = new Date(reservation.checkOut);
       const targetDate = new Date(date);
@@ -191,28 +193,34 @@ class RoomCalendar {
     };
   }
 
-  getBookedDates() {
-    if (!Array.isArray(reservationsData.items)) {
-      console.error('Invalid reservations data structure');
+  async getBookedDates() {
+    try {
+      const response = await fetch(
+        'https://obi.kean.edu/~kaisemax@kean.edu/CPS5301/hotel/php/printReservationData.php'
+      );
+      if (!response.ok) throw new Error('Network response was not ok');
+      this.reservationsData = await response.json(); // Store reservations data
+
+      return this.reservationsData.map((reservation) => ({
+        title: `${reservation.roomNumber} - ${reservation.guestName}`,
+        start: reservation.checkIn,
+        end: reservation.checkOut,
+        backgroundColor: this.getRoomTypeColor(reservation.roomType),
+        extendedProps: {
+          description: `
+            <div class="event-tooltip">
+              <p><strong>Room:</strong> ${reservation.roomNumber} (${reservation.roomType})</p>
+              <p><strong>Guest:</strong> ${reservation.guestName}</p>
+              <p><strong>Email:</strong> ${reservation.email}</p>
+              <p><strong>Guests:</strong> ${reservation.guests}</p>
+            </div>
+          `,
+        },
+      }));
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
       return [];
     }
-
-    return reservationsData.items.map((reservation) => ({
-      title: `${reservation.roomNumber} - ${reservation.guestName}`,
-      start: reservation.checkIn,
-      end: reservation.checkOut,
-      backgroundColor: this.getRoomTypeColor(reservation.roomType),
-      extendedProps: {
-        description: `
-          <div class="event-tooltip">
-            <p><strong>Room:</strong> ${reservation.roomNumber} (${reservation.roomType})</p>
-            <p><strong>Guest:</strong> ${reservation.guestName}</p>
-            <p><strong>Email:</strong> ${reservation.email}</p>
-            <p><strong>Guests:</strong> ${reservation.guests}</p>
-          </div>
-        `,
-      },
-    }));
   }
 
   getRoomTypeColor(roomType) {

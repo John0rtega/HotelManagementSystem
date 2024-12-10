@@ -1,30 +1,6 @@
 class CleaningManager {
   constructor() {
-    this.rooms = [
-      {
-        number: '101',
-        floor: 1,
-        assignedTo: 'John Doe',
-        status: 'pending',
-        type: 'Deluxe',
-      },
-      {
-        number: '102',
-        floor: 1,
-        assignedTo: 'Jane Smith',
-        status: 'in-progress',
-        type: 'Suite',
-      },
-      {
-        number: '103',
-        floor: 1,
-        assignedTo: 'John Doe',
-        status: 'completed',
-        type: 'Deluxe',
-      },
-      // Add more rooms as needed
-    ];
-
+    this.rooms = []; // Initialize as an empty array
     this.initializeFilters();
     this.loadRooms();
     this.attachEventListeners();
@@ -51,48 +27,45 @@ class CleaningManager {
     });
   }
 
-  loadRooms() {
-    this.renderRooms(this.rooms);
+  async loadRooms() {
+    try {
+      const response = await fetch(
+        'https://obi.kean.edu/~kaisemax@kean.edu/CPS5301/hotel/php/printRooms.php'
+      );
+      if (!response.ok) throw new Error('Network response was not ok');
+      this.rooms = await response.json(); // Fetch and store room data
+      this.renderRooms(this.rooms);
+    } catch (error) {
+      console.error('Error loading rooms:', error);
+    }
   }
 
   createRoomCard(room) {
     return `
       <div class="room-card">
-        <h3>Room ${room.number}</h3>
+        <h3>Room ${room.roomid}</h3>
         <p>Floor: ${room.floor}</p>
-        <p>Assigned to: ${room.assignedTo}</p>
+        <p>Assigned to: ${room.assigned}</p>
         <div class="status-container">
           <select class="status-select" onchange="window.cleaningManager.updateStatus('${
-            room.number
+            room.roomid
           }', this.value)">
             <option value="pending" ${
               room.status === 'pending' ? 'selected' : ''
             }>Pending</option>
             <option value="in-progress" ${
-              room.status === 'in-progress' ? 'selected' : ''
+              room.status === 'In-progress' ? 'selected' : ''
             }>In Progress</option>
             <option value="completed" ${
               room.status === 'completed' ? 'selected' : ''
             }>Completed</option>
           </select>
-          <span class="room-status status-${room.status}">${room.status}</span>
+          <span class="room-status status-${room.status.toLowerCase()}">${
+      room.status
+    }</span>
         </div>
       </div>
     `;
-  }
-
-  getDummyRooms() {
-    // This would be replaced with actual data from backend
-    return [
-      { number: '101', floor: 1, assignedTo: 'John Doe', status: 'pending' },
-      {
-        number: '102',
-        floor: 1,
-        assignedTo: 'Jane Smith',
-        status: 'in-progress',
-      },
-      // Add more dummy rooms as needed
-    ];
   }
 
   attachEventListeners() {

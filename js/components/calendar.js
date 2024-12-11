@@ -1,4 +1,6 @@
-class RoomCalendar {
+// calendar.js
+
+class HotelCalendar {
   constructor() {
     this.rooms = {
       Deluxe: ['101', '201'],
@@ -27,9 +29,12 @@ class RoomCalendar {
     }, 100);
   }
 
-  initializeCalendar() {
+  // Initialize the calendar
+  async initializeCalendar() {
     const calendarEl = document.getElementById('calendar');
     if (!calendarEl) return;
+
+    const events = await this.getBookedDates(); // Wait for events data
 
     this.calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
@@ -44,7 +49,7 @@ class RoomCalendar {
       handleWindowResize: true,
       selectable: true,
       select: (info) => this.handleDateSelect(info),
-      events: this.getBookedDates(),
+      events, // Use the fetched events
       eventContent: (arg) => {
         return {
           html: `<div class="fc-event-title">${arg.event.title}</div>`,
@@ -68,6 +73,7 @@ class RoomCalendar {
   }
 
   handleDateSelect(selectInfo) {
+    console.log('Date selected:', selectInfo.start); // Debugging line
     const selectedDate = selectInfo.start;
     const availableRooms = this.getAvailableRooms(selectedDate);
 
@@ -193,15 +199,20 @@ class RoomCalendar {
     };
   }
 
+  // Fetch booked dates from the server
   async getBookedDates() {
     try {
       const response = await fetch(
         'https://obi.kean.edu/~kaisemax@kean.edu/CPS5301/hotel/php/printReservationData.php'
       );
       if (!response.ok) throw new Error('Network response was not ok');
-      this.reservationsData = await response.json(); // Store reservations data
+      const reservations = await response.json();
+      this.reservationsData = reservations; // Store reservations
 
-      return this.reservationsData.map((reservation) => ({
+      // Map reservations to calendar events
+      return Array.from(
+        new Map(reservations.map((res) => [res.reservation_id, res])).values()
+      ).map((reservation) => ({
         title: `${reservation.roomNumber} - ${reservation.guestName}`,
         start: reservation.checkIn,
         end: reservation.checkOut,
@@ -223,41 +234,28 @@ class RoomCalendar {
     }
   }
 
+  // Get color based on room type
   getRoomTypeColor(roomType) {
     const colors = {
-      Deluxe: '#4CAF50',
-      Suite: '#2196F3',
-      Executive: '#9C27B0',
+      Deluxe: '#f39c12',
+      Standard: '#3498db',
+      Suite: '#e74c3c',
+      Economy: '#2ecc71',
     };
-    return colors[roomType] || '#666';
+    return colors[roomType] || '#95a5a6';
+  }
+
+  async refreshCalendar() {
+    if (this.calendar) {
+      const events = await this.getBookedDates();
+      this.calendar.removeAllEvents();
+      this.calendar.addEventSource(events);
+    }
   }
 }
 
-// Initialize the calendar and handle tab switching
+// Initialize the calendar when the page is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  const calendar = new RoomCalendar();
-
-  // Handle tab switching
-  const tabs = document.querySelectorAll('.tab-button');
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      setTimeout(() => {
-        if (calendar.calendar) {
-          calendar.calendar.updateSize();
-          window.dispatchEvent(new Event('resize'));
-        }
-      }, 100);
-    });
-  });
-
-  // Handle window resize
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      if (calendar.calendar) {
-        calendar.calendar.updateSize();
-      }
-    }, 250);
-  });
+  const hotelCalendar = new HotelCalendar();
+  hotelCalendar.initializeCalendar();
 });
